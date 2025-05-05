@@ -65,8 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ...productState[productId],
         ...changes,
       };
-      updateUIFromState();
-      updateProductTotal(productId);
+      updateUIFromState(productId);
     }
   }
 
@@ -96,9 +95,12 @@ document.addEventListener("DOMContentLoaded", function () {
         price: parseInt(selectedOption.dataset.price),
       };
 
-      // initialize total price for each product
-      updateProductTotal(productId);
+      // update pro
+      updateUIFromState(productId);
     });
+
+    updateCartTotal();
+    updateCartButton();
   }
 
   // calculate total price for all selected products
@@ -143,8 +145,15 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // update UI elements based on current state
-  function updateUIFromState() {
-    Object.values(productState).forEach((product) => {
+  function updateUIFromState(productId = null) {
+    // if a productId is passed, update only that product
+    const productsToUpdate = productId
+      ? [productState[productId]]
+      : Object.values(productState);
+
+    productsToUpdate.forEach((product) => {
+      if (!product) return;
+
       // outfit view elements
       const outfitCheckbox = document.querySelector(
         `.outfit-product-checkbox input[data-product-id="${product.id}"][data-product-index="${product.index}"]`
@@ -198,10 +207,16 @@ document.addEventListener("DOMContentLoaded", function () {
         outfitProductItem.classList.toggle("disabled", !product.selected);
       if (productItem)
         productItem.classList.toggle("disabled", !product.selected);
+
+      // update total price for product
+      updateProductTotal(product.id);
     });
 
-    updateCartTotal();
-    updateCartButton();
+    // only update cart total and button if all products are updated
+    if (!productId) {
+      updateCartTotal();
+      updateCartButton();
+    }
   }
 
   // set up event listeners for all UI elements
@@ -341,10 +356,10 @@ document.addEventListener("DOMContentLoaded", function () {
               addToCartButton.querySelector(".outfit-cart-text").textContent =
                 "Wird zum Warenkorb weitergeleitet...";
 
-              // redirect to cart after 1.5 seconds
+              // redirect to cart after 1 second
               setTimeout(() => {
                 window.location.href = "/cart";
-              }, 1500);
+              }, 1000);
             } else {
               throw new Error("Fehler beim Hinzufügen zum Warenkorb");
             }
