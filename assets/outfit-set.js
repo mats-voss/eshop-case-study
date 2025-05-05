@@ -123,13 +123,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const hasActiveProducts = Object.values(productState).some(
       (product) => product.selected
     );
+    const translations = JSON.parse(addToCartButton.dataset.translations);
 
     addToCartButton.disabled = !hasActiveProducts;
 
     if (hasActiveProducts) {
-      cartTextElement.textContent = "Auswahl zum Warenkorb hinzufügen";
+      cartTextElement.textContent = translations.add_selection_to_cart;
     } else {
-      cartTextElement.textContent = "Keine Produkte ausgewählt";
+      cartTextElement.textContent = translations.no_products_selected;
     }
   }
 
@@ -305,6 +306,8 @@ document.addEventListener("DOMContentLoaded", function () {
   function setupCartButtonListener() {
     const addToCartButton = document.querySelector(".outfit-add-to-cart");
     if (addToCartButton) {
+      const translations = JSON.parse(addToCartButton.dataset.translations);
+
       addToCartButton.addEventListener("click", async function () {
         const items = [];
 
@@ -324,7 +327,7 @@ document.addEventListener("DOMContentLoaded", function () {
             addToCartButton.classList.add("loading");
             addToCartButton.disabled = true;
             addToCartButton.querySelector(".outfit-cart-text").textContent =
-              "Wird hinzugefügt...";
+              translations.adding_to_cart;
 
             const response = await fetch("/cart/add.js", {
               method: "POST",
@@ -341,7 +344,7 @@ document.addEventListener("DOMContentLoaded", function () {
               addToCartButton.classList.remove("loading");
               addToCartButton.classList.add("success");
               addToCartButton.querySelector(".outfit-cart-text").textContent =
-                "Erfolgreich hinzugefügt";
+                translations.successfully_added;
 
               // reset state
               Object.keys(productState).forEach((productId) => {
@@ -360,27 +363,27 @@ document.addEventListener("DOMContentLoaded", function () {
               addToCartButton.classList.remove("success");
               addToCartButton.classList.add("loading");
               addToCartButton.querySelector(".outfit-cart-text").textContent =
-                "Wird zum Warenkorb weitergeleitet...";
+                translations.redirecting_to_cart;
 
               // redirect to cart after 1 second
               setTimeout(() => {
                 window.location.href = "/cart";
               }, 1000);
             } else {
-              throw new Error("Fehler beim Hinzufügen zum Warenkorb");
+              throw new Error(translations.error_occurred);
             }
           } catch (error) {
             console.error("Error:", error);
             addToCartButton.classList.remove("loading");
             addToCartButton.classList.add("error");
             addToCartButton.querySelector(".outfit-cart-text").textContent =
-              "Fehler aufgetreten";
+              translations.error_occurred;
 
             // set error state after 5 seconds
             setTimeout(() => {
               addToCartButton.classList.remove("error");
               addToCartButton.querySelector(".outfit-cart-text").textContent =
-                "In den Warenkorb";
+                translations.add_selection_to_cart;
               addToCartButton.disabled = false;
             }, 5000);
           }

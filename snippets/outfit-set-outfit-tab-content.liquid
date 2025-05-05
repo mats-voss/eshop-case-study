@@ -37,8 +37,16 @@
 
         <!-- cart action button -->
         <div class="outfit-cart-actions">
-          <button class="outfit-add-to-cart" type="button">
-            <span class="outfit-cart-text">Keine Produkte ausgewählt</span>
+          <button class="outfit-add-to-cart" type="button"
+            data-translations='{
+              "no_products_selected": {{ "outfit_set.no_products_selected" | t | json }},
+              "add_selection_to_cart": {{ "outfit_set.add_selection_to_cart" | t | json }},
+              "adding_to_cart": {{ "outfit_set.adding_to_cart" | t | json }},
+              "successfully_added": {{ "outfit_set.successfully_added" | t | json }},
+              "redirecting_to_cart": {{ "outfit_set.redirecting_to_cart" | t | json }},
+              "error_occurred": {{ "outfit_set.error_occurred" | t | json }}
+            }'>
+            <span class="outfit-cart-text">{{ 'outfit_set.no_products_selected' | t }}</span>
             <span class="outfit-cart-total">{{ 0 | money }}</span>
           </button>
         </div>

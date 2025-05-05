@@ -1,8 +1,8 @@
 <div class="product-tabs">
   <!-- navigation tabs -->
   <div class="product-tabs__header">
-    <button class="product-tab product-tab--outfit active" data-tab="outfit">Das Outfit</button>
-    <span class="product-tabs__divider">Im Outfit enthalten <span class="product-tabs__arrow">→</span></span>
+    <button class="product-tab product-tab--outfit active" data-tab="outfit">{{ 'outfit_set.outfit_tab' | t }}</button>
+    <span class="product-tabs__divider">{{ 'outfit_set.products_included' | t }} <span class="product-tabs__arrow">→</span></span>
     {% for product in metaobject.products.value %}
       <button class="product-tab" data-tab="product-{{ forloop.index }}">{{ product.title }}</button>
     {% endfor %}

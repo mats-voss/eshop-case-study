@@ -534,5 +534,18 @@
       "send_on": "YYYY-MM-DD",
       "send_on_label": "Send on (optional)"
     }
+  },
+  "outfit_set": {
+    "outfit_tab": "The Outfit",
+    "products_included": "Products included in outfit",
+    "no_products_selected": "No products selected",
+    "add_selection_to_cart": "Add selection to cart",
+    "quantity": "Quantity",
+    "total_price": "Total price",
+    "not_available": "Not available",
+    "adding_to_cart": "Adding to cart...",
+    "successfully_added": "Successfully added",
+    "redirecting_to_cart": "Redirecting to cart...",
+    "error_occurred": "An error occurred"
   }
 }
