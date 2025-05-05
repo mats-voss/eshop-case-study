@@ -213,11 +213,9 @@ document.addEventListener("DOMContentLoaded", function () {
       updateProductTotal(product.id);
     });
 
-    // only update cart total and button if all products are updated
-    if (!productId) {
-      updateCartTotal();
-      updateCartButton();
-    }
+    // update cart total and button
+    updateCartTotal();
+    updateCartButton();
   }
 
   // setup checkbox event listeners
@@ -346,19 +344,6 @@ document.addEventListener("DOMContentLoaded", function () {
               addToCartButton.querySelector(".outfit-cart-text").textContent =
                 translations.successfully_added;
 
-              // reset state
-              Object.keys(productState).forEach((productId) => {
-                if (productState[productId].selected) {
-                  productState[productId] = {
-                    ...productState[productId],
-                    quantity: 1,
-                  };
-                }
-              });
-
-              // update UI
-              updateUIFromState();
-
               // update button to redirect state
               addToCartButton.classList.remove("success");
               addToCartButton.classList.add("loading");
@@ -367,6 +352,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
               // redirect to cart after 1 second
               setTimeout(() => {
+                // reset state
+                Object.keys(productState).forEach((productId) => {
+                  productState[productId] = {
+                    ...productState[productId],
+                    quantity: 1,
+                    selected: false,
+                  };
+                });
+
+                // update UI
+                updateUIFromState();
+
                 window.location.href = "/cart";
               }, 1000);
             } else {
