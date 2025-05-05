@@ -1,0 +1,177 @@
+<div class="product product--large product--left product--stacked product--mobile-hide grid grid--1-col grid--2-col-tablet">
+  {% if metaobject.photos.value != blank %}
+    <!-- product media gallery -->
+    <div class="grid__item product__media-wrapper mobile-last">
+      <div class="product-media-gallery">
+        {% for photo in metaobject.photos.value %}
+          <div class="product-media-gallery__item">
+            <img 
+              src="{{ photo | image_url: width: 800 }}" 
+              alt="{{ metaobject.name }} - Foto {{ forloop.index }}"
+              loading="lazy"
+              width="800"
+              height="800"
+            >
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+  
+  <!-- product info -->
+  <div class="grid__item product__info-wrapper mobile-first">
+    <div id="ProductInfo-{{ metaobject.name }}" class="product__info-container">
+      <h1 class="product__title">{{ metaobject.name }}</h1>
+      {% if metaobject.description != blank %}
+        <div class="product__description rte">
+          {{ metaobject.description | metafield_tag }}
+        </div>
+      {% endif %}
+
+      <!-- control items and cart action button -->
+      <div class="outfit-products">
+        <!-- control items for all products -->
+        {% for product in metaobject.products.value %}
+          {% render 'outfit-set-product-control-item', product: product, index: forloop.index %}
+        {% endfor %}
+
+        <!-- cart action button -->
+        <div class="outfit-cart-actions">
+          <button class="outfit-add-to-cart" type="button">
+            <span class="outfit-cart-text">Keine Produkte ausgewählt</span>
+            <span class="outfit-cart-total">{{ 0 | money }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .product {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .product__title {
+    word-break: break-word;
+    margin-bottom: 1.5rem;
+  }
+  
+  .product__item {
+    margin-bottom: 4rem;
+  }
+  
+  .product__media-wrapper {
+    padding-left: 0;
+  }
+  
+  .product__info-wrapper {
+    padding: 0 0 0 5rem;
+  }
+  
+  .product__info-container {
+    max-width: 60rem;
+  }
+  
+  .product__info-container > * + * {
+    margin: 1.5rem 0;
+  }
+  
+  .product__text.caption-with-letter-spacing {
+    text-transform: uppercase;
+    color: rgba(var(--color-foreground), 0.75);
+  }
+  
+  .product__price {
+    font-size: 1.6rem;
+    font-weight: bold;
+  }
+  
+  .product__compare-price {
+    text-decoration: line-through;
+    color: rgba(var(--color-foreground), 0.75);
+    margin-left: 0.5rem;
+  }
+  
+  .product__description {
+    line-height: 1.5;
+  }
+
+  .product__column-sticky {
+    position: sticky;
+    top: 2rem;
+    height: fit-content;
+  }
+
+  /* Waterfall Grid Styles */
+  .product-media-gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .product-media-gallery__item {
+    position: relative;
+    width: 100%;
+    padding-bottom: 0;
+  }
+
+  .product-media-gallery__item img {
+    position: relative;
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease;
+    border-radius: 8px;
+    border: 1px solid rgba(var(--color-foreground), 0.1);
+  }
+
+  .product-media-gallery__item:hover img {
+    transform: scale(1.02);
+  }
+
+  @media screen and (max-width: 749px) {
+    .mobile-first {
+      order: 1;
+    }
+
+    .mobile-last {
+      order: 2;
+    }
+
+    .product-media-gallery {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media screen and (min-width: 750px) {
+    .product__info-wrapper {
+      padding: 0 0 0 5rem;
+    }
+  }
+  
+  @media screen and (min-width: 990px) {
+    .product__media-wrapper {
+      max-width: 65%;
+      width: calc(65% - var(--grid-desktop-horizontal-spacing) / 2);
+    }
+    
+    .product__info-wrapper {
+      padding: 0 0 0 4rem;
+      max-width: 35%;
+      width: calc(35% - var(--grid-desktop-horizontal-spacing) / 2);
+    }
+
+    .product__info-wrapper--extra-padding {
+      padding-left: 8rem;
+    }
+  }
+  
+  @media screen and (max-width: 749px) {
+    .product__info-wrapper {
+      padding: 0;
+    }
+  }
+</style> 

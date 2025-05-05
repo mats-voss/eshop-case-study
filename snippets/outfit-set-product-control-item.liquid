@@ -1,0 +1,115 @@
+<div class="outfit-product-item">
+  <!-- checkbox to toggle product selection -->
+  <div class="outfit-product-header">
+    <label class="outfit-product-checkbox">
+      <input type="checkbox" checked data-product-id="{{ product.id }}" data-product-index="{{ index }}">
+      <span class="checkmark"></span>
+    </label>
+    <h3 class="outfit-product-title">{{ product.title }}</h3>
+  </div>
+
+  <!-- variant selection -->
+  <div class="outfit-product-variants">
+    <select class="outfit-product-select" data-product-id="{{ product.id }}">
+      {% if product.variants.size > 1 %}
+        {% for variant in product.variants %}
+          <option value="{{ variant.id }}" data-price="{{ variant.price }}" {% if variant.available == false %}disabled{% endif %}>
+            {{ variant.title }} - {{ variant.price | money }}
+            {% if variant.available == false %}(Nicht verfügbar){% endif %}
+          </option>
+        {% endfor %}
+      {% else %}
+        <option value="{{ product.variants.first.id }}" data-price="{{ product.price }}" selected>
+          {{ product.title }} - {{ product.price | money }}
+        </option>
+      {% endif %}
+    </select>
+  </div>
+
+  <!-- quantity input and total price display -->
+  <div class="outfit-product-quantity">
+    <label for="quantity-{{ product.id }}">Menge:</label>
+    <input type="number" 
+           id="quantity-{{ product.id }}" 
+           name="quantity" 
+           value="1" 
+           min="1" 
+           data-product-id="{{ product.id }}"
+           class="quantity-input">
+    <span class="outfit-product-quantity-divider">|</span>
+    <span class="outfit-product-total-price" data-product-id="{{ product.id }}">{{ product.price | money }}</span>
+  </div>
+</div>
+
+<style>
+  .outfit-product-item {
+    padding: 1rem;
+    border: 1px solid rgba(var(--color-foreground), 0.1);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+
+  .outfit-product-item.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .outfit-product-item.disabled .outfit-product-checkbox {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .outfit-product-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .outfit-product-checkbox {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .outfit-product-checkbox input {
+    margin-right: 0.5rem;
+  }
+
+  .outfit-product-title {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+
+  .outfit-product-variants {
+    margin-bottom: 1rem;
+  }
+
+  .outfit-product-select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid rgba(var(--color-foreground), 0.1);
+    border-radius: 4px;
+  }
+
+  .outfit-product-quantity {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .outfit-product-quantity input {
+    width: 60px;
+    padding: 0.5rem;
+    border: 1px solid rgba(var(--color-foreground), 0.1);
+    border-radius: 4px;
+  }
+
+  .outfit-product-quantity-divider {
+    color: rgba(var(--color-foreground), 0.3);
+  }
+
+  .outfit-product-total-price {
+    font-weight: bold;
+  }
+</style>
