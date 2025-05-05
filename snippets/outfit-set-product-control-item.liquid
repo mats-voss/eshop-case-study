@@ -41,6 +41,24 @@
   </div>
 </div>
 
+<script>
+  // quantity input validation
+  document.addEventListener('DOMContentLoaded', function() {
+    const quantityInputs = document.querySelectorAll('.quantity-input');
+    
+    quantityInputs.forEach(input => {
+      input.addEventListener('input', function() {
+        // replace NaN with 0
+        if (isNaN(this.value) || this.value === '') {
+          this.value = 0;
+        }
+
+        this.value = Math.max(0, parseInt(this.value));
+      });
+    });
+  });
+</script>
+
 <style>
   .outfit-product-item {
     padding: 1rem;
