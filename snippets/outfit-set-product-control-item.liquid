@@ -15,7 +15,7 @@
         {% for variant in product.variants %}
           <option value="{{ variant.id }}" data-price="{{ variant.price }}" {% if variant.available == false %}disabled{% endif %}>
             {{ variant.title }} - {{ variant.price | money }}
-            {% if variant.available == false %}(Nicht verfügbar){% endif %}
+            {% if variant.available == false %}({{ 'outfit_set.not_available' | t }}){% endif %}
           </option>
         {% endfor %}
       {% else %}
