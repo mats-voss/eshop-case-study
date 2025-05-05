@@ -219,9 +219,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // set up event listeners for all UI elements
-  function setupEventListeners() {
-    // event listeners for outfit view
+  // setup checkbox event listeners
+  function setupCheckboxListeners() {
     document
       .querySelectorAll(".outfit-product-checkbox input")
       .forEach((checkbox) => {
@@ -231,7 +230,10 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         });
       });
+  }
 
+  // setup select event listeners
+  function setupSelectListeners() {
     document.querySelectorAll(".outfit-product-select").forEach((select) => {
       select.addEventListener("change", function () {
         handleProductChange(this.dataset.productId, {
@@ -239,7 +241,10 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       });
     });
+  }
 
+  // setup quantity input event listeners
+  function setupQuantityListeners() {
     document.querySelectorAll(".quantity-input").forEach((input) => {
       input.addEventListener("change", function () {
         handleProductChange(this.dataset.productId, {
@@ -252,8 +257,10 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       });
     });
+  }
 
-    // event listeners for product view
+  // setup product view event listeners
+  function setupProductViewListeners() {
     document.querySelectorAll(".product-tab-content").forEach((tab) => {
       const productId = tab.querySelector(".outfit-product-checkbox input")
         ?.dataset.productId;
@@ -264,7 +271,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (checkbox) {
           checkbox.addEventListener("change", function () {
-            const productId = this.dataset.productId;
             handleProductChange(productId, {
               selected: this.checked,
             });
@@ -273,7 +279,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (select) {
           select.addEventListener("change", function () {
-            const productId = this.dataset.productId;
             handleProductChange(productId, {
               variantId: this.value,
             });
@@ -282,13 +287,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (quantityInput) {
           quantityInput.addEventListener("change", function () {
-            const productId = this.dataset.productId;
             handleProductChange(productId, {
               quantity: parseInt(this.value),
             });
           });
           quantityInput.addEventListener("input", function () {
-            const productId = this.dataset.productId;
             handleProductChange(productId, {
               quantity: parseInt(this.value),
             });
@@ -296,8 +299,10 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
     });
+  }
 
-    // event-listener for the cart button
+  // setup cart button event listener
+  function setupCartButtonListener() {
     const addToCartButton = document.querySelector(".outfit-add-to-cart");
     if (addToCartButton) {
       addToCartButton.addEventListener("click", async function () {
@@ -312,9 +317,10 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         });
 
+        // if there are any items to add, add them to the cart
         if (items.length > 0) {
           try {
-            // loading button
+            // apply loading state to button
             addToCartButton.classList.add("loading");
             addToCartButton.disabled = true;
             addToCartButton.querySelector(".outfit-cart-text").textContent =
@@ -331,7 +337,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const data = await response.json();
 
             if (response.ok) {
-              // success button
+              // remove loading state and apply success state
               addToCartButton.classList.remove("loading");
               addToCartButton.classList.add("success");
               addToCartButton.querySelector(".outfit-cart-text").textContent =
@@ -350,7 +356,7 @@ document.addEventListener("DOMContentLoaded", function () {
               // update UI
               updateUIFromState();
 
-              // updating button to redirect state
+              // update button to redirect state
               addToCartButton.classList.remove("success");
               addToCartButton.classList.add("loading");
               addToCartButton.querySelector(".outfit-cart-text").textContent =
@@ -381,6 +387,15 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
     }
+  }
+
+  // set up event listeners for all UI elements
+  function setupEventListeners() {
+    setupCheckboxListeners();
+    setupSelectListeners();
+    setupQuantityListeners();
+    setupProductViewListeners();
+    setupCartButtonListener();
   }
 
   // initialize
